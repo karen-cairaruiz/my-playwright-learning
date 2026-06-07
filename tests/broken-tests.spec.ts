@@ -10,6 +10,7 @@ test("login should redirect to inventory", async ({ page }) => {
   await page.getByPlaceholder("Password").fill("secret_sauce");
   await page.getByRole("button", { name: "Login" }).click();
   await expect(page).toHaveURL(/inventory/);
+  //this is a new line
 });
 
 //Root cause: wrong locator and error message text
