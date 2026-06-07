@@ -32,7 +32,7 @@ test("error message on wrong password", async ({ page }) => {
 //Fix: added await
 //How I verified: went back to the test, added await before the click action, and ran the test again to confirm it still passes and that the badge appears as expected.
 
-test("cart badge appears after adding product", async ({ page }) => {
+test.only("cart badge appears after adding product", async ({ page }) => {
   await page.goto("https://www.saucedemo.com");
   await page.getByPlaceholder("Username").fill("standard_user");
   await page.getByPlaceholder("Password").fill("secret_sauce");
@@ -43,4 +43,6 @@ test("cart badge appears after adding product", async ({ page }) => {
   await expect(page.locator(".shopping_cart_badge")).toHaveText("1");
 });
 
+
+  
 
