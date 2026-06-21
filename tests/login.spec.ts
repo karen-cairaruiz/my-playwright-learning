@@ -45,4 +45,5 @@ test.describe('Login Functionality', () => {
     test("Locked out user sees error message when trying to login", async ({ page }) => {
     await loginPage.login ("locked_out_user","secret_sauce")
     await expect(page.getByText('Epic sadface: Sorry, this user has been locked out.')).toBeVisible();
+    } );
 })
