@@ -3,6 +3,7 @@ import { LoginPage } from "../pages/LoginPage";          // 2. Import page objec
 
 test.describe('Login Functionality', () => {
     let loginPage: LoginPage;                              // Declare variable for page object
+
     test.beforeEach(async ({ page }) => {
         loginPage = new LoginPage(page);                    // 3. Initialize page object
         await loginPage.open();                              // 4. Open the login page
@@ -44,5 +45,4 @@ test.describe('Login Functionality', () => {
     test("Locked out user sees error message when trying to login", async ({ page }) => {
     await loginPage.login ("locked_out_user","secret_sauce")
     await expect(page.getByText('Epic sadface: Sorry, this user has been locked out.')).toBeVisible();
-    } );
 })
