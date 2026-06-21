@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";       // 1. Import tools
 
-test.describe('SauceDemo Login Functionality', () => {
+test.describe('Login Functionality', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto("/");
         
@@ -39,6 +39,13 @@ test.describe('SauceDemo Login Functionality', () => {
     await expect(page.getByText('Epic sadface: Username is required')).toBeVisible();
     await expect(page).toHaveURL("/");
     } );
+
+    //Locked user can't login with their credentials
+    test("Locked out user sees error message when trying to login", async ({ page }) => {
+    await page.getByRole('textbox', { name: "Username" }).fill("locked_out_user");
+    await page.getByRole('textbox', { name: "Password" }).fill("secret_sauce");
+    await page.getByRole('button', {name: "Login"}).click();
+    await expect(page.getByText('Epic sadface: Sorry, this user has been locked out.')).toBeVisible();
 });
 
 
@@ -100,17 +107,4 @@ test("User can sort products by price", async ({ page }) => {
 
 } );
     
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
+})});
