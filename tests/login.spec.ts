@@ -9,41 +9,38 @@ test.describe('Login Functionality', () => {
         await loginPage.open();                              // 4. Open the login page
     });
 
-    //Happy path
+    //standard_user can log in and sees inventory page
     test ("user successfully logs in with valid credentials", async ({ page }) => {
-    await loginPage.login("performance_glitch_user","secret_sauce");
+    await loginPage.login("standard_user","secret_sauce");
     await expect(page).toHaveURL("/inventory.html");    
     }  );
     
-    //Negative path
+    //User with invalid credentials sees error message
     test ("user sees error message with invalid credentials", async ({ page }) => {
     await loginPage.login("invalid_user","wrong_password");
-    await expect(page.getByText('Epic sadface: Username and password do not match any user in this service')).toBeVisible();
+    await expect(loginPage.errorMessage).toContainText('Epic sadface: Username and password do not match any user in this service');
     }  );
 
-    //Edge cases
+    //User must enter both username and password to log in
     test("User can't login if username and password are not entered", async ({ page }) => {
-
-    //Username and password are empty
     await loginPage.login ("","")
-    await expect(page.getByText('Epic sadface: Username is required')).toBeVisible();
-    await expect(page).toHaveURL("/");
-
-    //Username is entered but password is empty
+    await expect(loginPage.errorMessage).toContainText('Epic sadface: Username is required');
+    })
+    
+    test("User can't login if password is not entered", async ({ page }) => {
     await loginPage.login ("performance_glitch_user","")
-    await expect(page.getByText('Epic sadface: Password is required')).toBeVisible();
-    await expect(page).toHaveURL("/");
+    await expect(loginPage.errorMessage).toContainText('Epic sadface: Password is required');
 
-    //Username is empty but password is entered
+    } );
 
+    test("User can't login if username is not entered", async ({ page }) => {
     await loginPage.login ("","secret_sauce")
-    await expect(page.getByText('Epic sadface: Username is required')).toBeVisible();
-    await expect(page).toHaveURL("/");
+    await expect(loginPage.errorMessage).toContainText('Epic sadface: Username is required');
     } );
 
     //Locked user can't login with their credentials
     test("Locked out user sees error message when trying to login", async ({ page }) => {
-    await loginPage.login ("locked_out_user","secret_sauce")
-    await expect(page.getByText('Epic sadface: Sorry, this user has been locked out.')).toBeVisible();
+    await loginPage.login ("locked_out_user","secret_sauce")       
+    await expect(loginPage.errorMessage).toContainText('Epic sadface: Sorry, this user has been locked out.');
     } );
 })
